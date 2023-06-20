@@ -1,0 +1,40 @@
+# docker-compose.yml
+services:
+  
+  # server
+  project-server:
+    build:
+      # location of Dockerfile
+      context: ./server
+    container_name: project-server
+    networks:
+      - project-network
+    volumes:
+      # mount code into container
+      - ./server:/app/server
+      # maintain existing node_modules in container
+      - /app/server/node_modules
+  
+  # client
+  project-client:
+    build:
+      # location of Dockerfile
+      context: ./client
+    container_name: project-client
+    depends_on:
+      # requires server to start
+      - project-server
+    networks:
+      - project-network
+      # allow external connections
+      - default
+    volumes:
+      # mount code into container
+      - ./client:/app/client
+      # maintain existing node_modules in container
+      - /app/client/node_modules
+
+networks:
+  project-network:
+    name: project-network
+    internal: true
