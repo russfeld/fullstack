@@ -9,6 +9,8 @@ services:
     container_name: project-server
     networks:
       - project-network
+      # allow external connections (remove this in production)
+      - default
     volumes:
       # mount code into container
       - ./server:/app/server
@@ -35,6 +37,7 @@ services:
       - /app/client/node_modules
 
 networks:
+  # internal Docker network for project
   project-network:
     name: project-network
     internal: true
