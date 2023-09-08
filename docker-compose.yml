@@ -32,6 +32,8 @@ services:
       # location of Dockerfile
       context: ./server
     container_name: project-server
+    # set the user ID to match our user
+    user: "1000"
     depends_on:
       # requires database to start
       - project-db
@@ -44,6 +46,9 @@ services:
       - ./server:/app/server
       # maintain existing node_modules in container
       - /app/server/node_modules
+    env_file:
+      # load environment file into container environment
+      - .env
   
   # client
   project-client:
@@ -51,6 +56,8 @@ services:
       # location of Dockerfile
       context: ./client
     container_name: project-client
+    # set the user ID to match our user
+    user: "1000"
     depends_on:
       # requires server to start
       - project-server
